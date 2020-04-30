@@ -56,7 +56,7 @@ class ImageController extends AbstractFOSRestController
     }
 
     /**
-     * @Route("/image-list", name="image_library")
+     * @Route("/image-library", name="image_library")
      */
     public function adminIndexAction(Request $request, ImageRepository $imageRepository, CustomFileManager $customFileManager, CustomService $customService)
     {
@@ -77,7 +77,7 @@ class ImageController extends AbstractFOSRestController
 
             $this->addFlash('message', $response['message']);
 
-            return $this->redirectToRoute('admin');
+            return $this->redirectToRoute('image_library');
         }
      
         return $this->render('image/imageLibrary.html.twig', [
