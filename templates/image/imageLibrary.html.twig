@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Image Library{% endblock %}
+
+{% block body %}
+
+{% for message in app.flashes('message') %}
+            <div class="alert alert-info flash-message alert-dismissible" role="alert">
+            <button type="button" class="flash-message-close close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+            </button>
+                {{ message }}
+            </div>
+{% endfor %}
+
+<h1> Image library </h1>
+<hr>
+<div class="form-row">
+    <div class="col-10">
+        {{ form_start(form) }}
+            
+            {{ form_widget(form.file, {
+                attr: {
+                    'placeholder': 'Click to upload image(s)'
+                }
+                }) 
+            }}
+    </div>
+    <div class="col-2">
+        <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+        {{ form_end(form) }}
+    </div>
+</div>
+<hr>
+<div class="form-row">
+    <div class="col-4">
+        <a href = {{ path('image_library', {'limit' : 6 }) }} class="btn btn-info">Show 6 entries</a>
+    </div>
+    <div class="col-4">
+        <a href = {{ path('image_library', {'limit' : 15 }) }} class="btn btn-info">Show 15 entries</a>
+    </div>
+    <div class="col-4">
+        <a href = {{ path('image_library') }} class="btn btn-info">Show all entries</a>
+    </div>
+</div>
+<hr>
+<div class="form-row">
+    {% for image in images %}
+        <div class="col-4 p-1">
+            <div class="">
+                <a href={{ image.imageUrl }} target="_blank"><img class="" src={{ image.thumbnailUrl }}  alt="image"></a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<hr>
+<div class="form-row">
+    <div class="col">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% for i in range (1,  totalPages ) %}
+
+                {% if i ==  page  %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#" tabindex="-1">{{ i }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="{{ path('image_library',app.request.query.all|merge({'page' : i })) }}">{{ i }}</a></li>
+                {% endif %}
+
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script> 
+    $('.custom-file-input').on('change', function(event) {
+        var inputFile = event.currentTarget;
+        var fileCount = inputFile.files.length;
+        $(inputFile).parent()
+            .find('.custom-file-label')
+            .html(fileCount + ' files selected');
+    });
+
+    $(".flash-message-close").click(function () {
+        $(this).parent().remove();
+    })
+</script>
+
+{% endblock %}
