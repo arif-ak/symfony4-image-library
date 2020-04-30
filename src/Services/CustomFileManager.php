@@ -35,7 +35,7 @@ class CustomFileManager
 
         foreach($files as $file)
         {   
-            if (in_array(strtolower($file->guessExtension()),Image::$supportedImageExtensions)) {
+            if ($this->validateForImage($file)) {
                 
                 $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
 
@@ -78,8 +78,22 @@ class CustomFileManager
         
     }
 
-     /**
-     * @return string
+    /**
+     * Validation for Image file(s)
+     */
+    public function validateForImage($file)
+    {
+        //check whether file is image or not based on file extension
+        if(!(in_array(strtolower($file->guessExtension()),Image::$supportedImageExtensions))) 
+            return false;
+        
+        //TODO : more validations for image file(s)
+
+        return true;
+    }
+    
+    /**
+     * Generate unique file name
      */
     public function generateUniqueFileName()
     {

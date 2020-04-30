@@ -21,6 +21,9 @@ class CustomService
         $this->imageRepository = $imageRepository;
     }
 
+    /**
+     * Function to process limit and offset for get query.
+     */
     public function validatePageFilters($limit,$page)
     {
         $result = [];
