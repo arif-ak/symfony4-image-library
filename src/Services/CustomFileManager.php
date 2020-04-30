@@ -33,6 +33,10 @@ class CustomFileManager
     {   
         $uploadedFilesCounter = 0; //counter to track uploaded/discarded files
 
+        // Condition to change single file entry into an array entry, if frontend uses 'file' key instead of 'file[]' key
+        if(!is_array($files))   
+            $files = [$files];
+
         foreach($files as $file)
         {   
             if ($this->validateForImage($file)) {
@@ -83,13 +87,14 @@ class CustomFileManager
      */
     public function validateForImage($file)
     {
+        $isValid = true;
         //check whether file is image or not based on file extension
         if(!(in_array(strtolower($file->guessExtension()),Image::$supportedImageExtensions))) 
-            return false;
+            $isValid = false;
         
         //TODO : more validations for image file(s)
 
-        return true;
+        return $isValid;
     }
     
     /**
